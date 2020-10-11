@@ -1,0 +1,22 @@
+﻿<!-- nav -->
+<img src="assets/img/masep_logo.png"> 
+<p>MASEP Registration System, a web application to register DUI offenders attending online classes</p>
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>        
+        <a class="nav-item nav-link" routerLink="/offenders/add" routerLinkActive="active">Add New Offender</a>
+        <a class="nav-item nav-link" routerLink="/offenders" routerLinkActive="active">Show Offenders</a>
+        <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+    <alert></alert>
+    <router-outlet></router-outlet>
+</div>
+
+<!-- credits -->
+<div class="text-center mt-4">
+</div>

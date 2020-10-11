@@ -1,0 +1,45 @@
+<h1>Offenders</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Add New Offender</a>
+
+<div class="md-form mt-0">
+  <input class="form-control" [(ngModel)]="searchText" (ngModelChange)="searchOffender($event)" type="text" placeholder="Search" aria-label="Search">
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 12%">First Name</th>
+            <th style="width: 12%">Middle Name</th>
+            <th style="width: 12%">Last Name</th>
+            <th style="width: 12%">Email</th>
+            <th style="width: 12%">Phone Number</th>
+            <th style="width: 12%">Court ID</th>
+            <th style="width: 12%">Class</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let offender of displayedOffenders">
+            <td>{{offender.firstname}}</td>
+            <td>{{offender.middlename}}</td>
+            <td>{{offender.lastname}}</td>
+            <td>{{offender.email}}</td>
+            <td>{{offender.phonenumber}}</td>
+            <td>{{offender.courtorderid}}</td>
+            <td>{{offender.class}}</td>
+            <td style="white-space: nowrap">
+                <a routerLink="edit/{{offender.id}}" class="btn btn-sm btn-primary mr-1">View/Edit</a>
+                <button (click)="deleteOffender(offender.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="offender.isDeleting">
+                    <span *ngIf="offender.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!offender.isDeleting">Delete</span>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="!offenders">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button (click)="exportCSV()" class="btn btn-sm btn-primary">Export To CSV</button>
