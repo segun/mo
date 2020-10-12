@@ -4,7 +4,7 @@
   "description": "Masep Offender Registration with Search and View",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "author": "Oluwatobiloba Lasisi",
   "license": "ISC",
