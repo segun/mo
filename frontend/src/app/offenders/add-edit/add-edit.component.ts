@@ -39,7 +39,7 @@ export class AddEditComponent implements OnInit {
       email: ['', Validators.required],
       courtorderid: ['', Validators.required],
       firstname: ['', Validators.required],
-      middlename: ['', Validators.required],
+      middlename: [''],
       lastname: ['', Validators.required],
       phonenumber: ['', Validators.required],
       class: ['', Validators.required],

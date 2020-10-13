@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:1337'
+    apiUrl: 'http://register.masep.org:4200'
 };

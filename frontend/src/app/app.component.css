@@ -1,14 +1,14 @@
 .app-container {
-    background-color: grey !important;
+    background-color: white !important;
     min-height: 780px !important;
-    background-image: url('./brickwallpaper.png') !important;  
+    /* background-image: url('./brickwallpaper.png') !important;   */
 }
 .p-4 {
     background-color: blue !important;
 }
 
 p {
-    font-size: 2rem;
+    font-size: 180%; 
     text-align: center;
 
 }
