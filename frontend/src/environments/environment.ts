@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'register.masep.org:4200'
+    apiUrl: 'http://register.masep.org:1337'
 };
 
 /*
