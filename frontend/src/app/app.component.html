@@ -1,6 +1,11 @@
 ﻿<!-- nav -->
-<img src="assets/img/masep_logo.png"> 
+<img src="assets/img/masep_logo.png">
+<div class="container" [ngClass]="{ 'bg-light': user }"> 
 <p>MASEP Registration System, a web application to register DUI offenders attending online classes</p>
+</div>
+        <style>
+            .container {margin: 20px padding: 200px}
+        </style>
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>        

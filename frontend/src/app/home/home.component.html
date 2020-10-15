@@ -1,8 +1,19 @@
 ﻿<div class="p-4">
     <div class="container">
+        <style>
+            h1 {text-indent: -80px;}
+            p {text-indent: -80px;}
+            .col-4 {right:100px;}
+          </style>
         <h1>Hi {{user.firstname}}!</h1>
         <p>You're logged-in</p>
-        <p><a routerLink="/offenders">Manage Offenders</a></p>
-        <p><a routerLink="/users">Manage Users</a></p>        
+        <!-- <p><a routerLink="/offenders">Manage Offenders</a></p>
+        <p><a routerLink="/users">Manage Users</a></p>   -->
+    <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" routerLink="/offenders">Manage Offenders</a>
+        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" routerLink="/users">Manage Users</a>
     </div>
+</div>
+</div>
 </div>
