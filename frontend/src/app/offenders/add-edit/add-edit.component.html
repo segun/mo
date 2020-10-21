@@ -12,10 +12,10 @@
     </div>
 
     <div class="form-group col">
-      <label for="courtorderid">Court Order ID</label>
+      <label for="courtorderid">Court Order #</label>
       <input type="text" formControlName="courtorderid" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.courtorderid.errors }" />
       <div *ngIf="submitted && f.courtorderid.errors" class="invalid-feedback">
-        <div *ngIf="f.courtorderid.errors.required">Court Order ID is required</div>
+        <div *ngIf="f.courtorderid.errors.required">Court Order # is required</div>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@
 
   <div class="form-row">
     <div class="form-group col">
-      <label for="class">Class</label>
+      <label for="class">Class #</label>
       <input type="text" formControlName="class" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.class.errors }" />
       <div *ngIf="submitted && f.class.errors" class="invalid-feedback">
         <div *ngIf="f.class.errors.required">Class is required</div>
