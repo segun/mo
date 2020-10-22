@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use('/offenders', offenderRoutes);
-app.use('/users', userRoutes);
+app.use('/api/offenders', offenderRoutes);
+app.use('/api/users', userRoutes);
 
 app.listen('1337', () => {
     console.log('Listen Successfully on 1337');
