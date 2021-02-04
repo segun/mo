@@ -21,10 +21,15 @@ const deleteOffender = async (req, res) => {
     offenderModel.deleteOffender(req, res).then(() => {});
 }
 
+const completeClass = async (req, res) => {
+    offenderModel.completeClass(req, res).then(() => {});
+}
+
 module.exports = {
     index,
     newOffender,
     viewOffender,
     editOffender,
-    deleteOffender
+    deleteOffender,
+    completeClass
 }

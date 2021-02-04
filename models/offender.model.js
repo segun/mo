@@ -20,6 +20,22 @@ async function deleteOffender(req, res) {
     }        
 }
 
+async function completeClass(req, res) {
+    const offenderId = req.params.offenderId;
+    const updateQuery = "UPDATE masep.offender SET archived = true, status = 'Completed', completedat = $2 WHERE id = $1 returning *";
+    const values = [offenderId, new Date()];
+    try {
+        const { rows } = await query(updateQuery, values);
+        const dbResponse = rows[0];
+        delete dbResponse.password;
+        return res.status(status.StatusCodes.ACCEPTED).send(dbResponse);
+    } catch (error) {
+        console.log(error);
+        errorMessage.error = 'Operation was not successful';
+        return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+    }        
+}
+
 async function editOffender(req, res) {
     const offenderId = req.params.offenderId;
     const email = req.body.email;
@@ -58,7 +74,7 @@ async function editOffender(req, res) {
         clas,
         year,
         updatedAt,
-        offenderId
+        offenderId,
     ];
 
     try {
@@ -125,6 +141,7 @@ async function addNewOffender(req, res) {
     const archived = false;
     const createdAt = new Date();
     const updatedAt = new Date();
+    const offenderStatus = "InProgess";
 
     if (!isValidEmail(email)) {
         errorMessage.error = 'Invalid Email Address';
@@ -132,8 +149,8 @@ async function addNewOffender(req, res) {
     }
 
     const createOffenderQuery = `INSERT INTO masep.offender(
-                email, courtorderid, firstname, middlename, lastname, phonenumber, class, year, archived, createdat, updatedat) 
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning *`;
+                email, courtorderid, firstname, middlename, lastname, phonenumber, class, year, archived, createdat, updatedat, status) 
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning *`;
     const values = [
         email,
         courtorderid,
@@ -145,7 +162,8 @@ async function addNewOffender(req, res) {
         year,
         archived,
         createdAt,
-        updatedAt
+        updatedAt,
+        offenderStatus
     ];
 
     try {
@@ -170,5 +188,6 @@ module.exports = {
     getAllOffenders,
     getById,
     editOffender,
-    deleteOffender
+    deleteOffender,
+    completeClass,
 };

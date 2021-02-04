@@ -10,6 +10,10 @@ export class ListComponent implements OnInit {
   offenders = null;
   displayedOffenders = null;
   searchText = '';
+  offenderId;
+  offenderDeleted = false;
+  classCompleted = false;
+
   constructor(private offenderService: OffenderService) { }
 
   ngOnInit(): void {
@@ -21,13 +25,33 @@ export class ListComponent implements OnInit {
       });
   }
 
-  deleteOffender(id: string) {
+  deleteOffender() {
+    const id = this.offenderId;
     const offender = this.offenders.find(x => x.id === id);
     offender.isDeleting = true;
     this.offenderService.delete(id)
       .pipe(first())
       .subscribe(() => {
         this.displayedOffenders = this.offenders.filter(x => x.id !== id);
+        this.offenderDeleted = true;
+      });
+  }
+
+  selectOffender(id: string) {
+    console.log("Select Offender Called", id);
+    this.offenderId = id;
+  }
+
+  completeClass() {
+    const id =  this.offenderId;
+    const offender = this.offenders.find(x => x.id === id);
+    offender.isCompletingClass = true;
+    this.offenderService.completeClass(id)
+      .pipe(first())
+      .subscribe(() => {
+        this.displayedOffenders = this.offenders.filter(x => x.id !== id);
+        offender.isCompletingClass = false;
+        this.classCompleted = true;
       });
   }
 

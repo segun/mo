@@ -1,24 +1,41 @@
+<div class="alert alert-success" role="alert" *ngIf="offenderDeleted">
+      Student deleted successfully.
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>
+
+<div class="alert alert-success" role="alert" *ngIf="classCompleted">
+    Class completed successfully for student.
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <h1>Offenders</h1>
 <a routerLink="add" class="btn btn-sm btn-success mb-2">Add New Offender</a>
 
 <div class="md-form mt-0">
-  <input class="form-control" [(ngModel)]="searchText" (ngModelChange)="searchOffender($event)" type="text" placeholder="Search" aria-label="Search">
+    <input class="form-control" [(ngModel)]="searchText" (ngModelChange)="searchOffender($event)" type="text"
+        placeholder="Search" aria-label="Search">
 </div>
-<table class="table table-striped">
+<table class="table table-striped" style="width: 100% !important;">
     <thead>
         <tr>
+            <th style="width: 5%">S/N</th>
             <th style="width: 12%">First Name</th>
             <th style="width: 13%">Middle Name</th>
             <th style="width: 12%">Last Name</th>
-            <th style="width: 12%">Email</th>
-            <th style="width: 12%">Phone #</th>
-            <th style="width: 12%">CourtOrder #</th>
-            <th style="width: 12%">Class #</th>
-            <th style="width: 10%"></th>
+            <th style="width: 11%">Email</th>
+            <th style="width: 11%">Phone#</th>
+            <th style="width: 11%">Court Order#</th>
+            <th style="width: 11%">Class#</th>
+            <th style="width: 9%"></th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let offender of displayedOffenders">
+        <tr *ngFor="let offender of displayedOffenders; let i = index" [attr.data-index]="i">
+            <td>{{i+1}}</td>
             <td>{{offender.firstname}}</td>
             <td>{{offender.middlename}}</td>
             <td>{{offender.lastname}}</td>
@@ -28,9 +45,15 @@
             <td>{{offender.class}}</td>
             <td style="white-space: nowrap">
                 <a routerLink="edit/{{offender.id}}" class="btn btn-sm btn-primary mr-1">View/Edit</a>
-                <button (click)="deleteOffender(offender.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="offender.isDeleting">
+                <!-- <button (click)="deleteOffender(offender.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="offender.isDeleting"> -->
+                <button [disabled]="offender.isDeleting" (click)="selectOffender(offender.id)" type="button" class="btn btn-danger btn-delete-user btn-sm mr-1" data-toggle="modal" data-target="#deleteModal">
                     <span *ngIf="offender.isDeleting" class="spinner-border spinner-border-sm"></span>
                     <span *ngIf="!offender.isDeleting">Delete</span>
+                </button>
+                <!-- <button (click)="completeClass(offender.id)" class="btn btn-sm btn-success" [disabled]="offender.isCompletingClass"> -->
+                <button [disabled]="offender.isCompletingClass" (click)="selectOffender(offender.id)" type="button" class="btn btn-success btn-sm mr-1" data-toggle="modal" data-target="#completeClassModal">
+                    <span *ngIf="offender.isCompletingClass" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!offender.isCompletingClass">Complete</span>
                 </button>
             </td>
         </tr>
@@ -43,3 +66,48 @@
 </table>
 
 <button (click)="exportCSV()" class="btn btn-sm btn-primary">Export To CSV</button>
+
+<!-- Complete Modal -->
+<div class="modal fade" id="completeClassModal" tabindex="-1" role="dialog" aria-labelledby="completeClassModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Complete Class</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to complete class for this student?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="completeClass()" data-dismiss="modal">Complete Class</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" (click)="deleteOffender()" data-dismiss="modal">Delete Student</button>
+            </div>
+        </div>
+    </div>
+</div>
