@@ -47,4 +47,11 @@ export class OffenderService {
         return x;
       }));
   }
+
+  completeClass(id: string) {
+    return this.http.post<Offender>(`${environment.apiUrl}/offenders/${id}/complete`, {})
+      .pipe(map(x => {
+        return x;
+      }));
+  }  
 }
