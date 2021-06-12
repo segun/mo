@@ -13,8 +13,8 @@ const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
-    { path: 'offenders', loadChildren: offendersModule },
-    { path: 'questions', loadChildren: questionsModule },
+    { path: 'offenders', loadChildren: offendersModule, canActivate: [AuthGuard] },
+    { path: 'questions', loadChildren: questionsModule, canActivate: [AuthGuard] },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
