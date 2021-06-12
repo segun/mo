@@ -7,6 +7,8 @@ import { QuestionsService } from '@app/_services/questions.service';
 })
 export class ListComponent implements OnInit {
   questions = null;
+  questionId;
+  questionDeleted = false;
 
   constructor(private questionsService: QuestionsService) { }
 
@@ -14,7 +16,23 @@ export class ListComponent implements OnInit {
     this.questionsService.getAll()
       .pipe(first())
       .subscribe(questions => {
-        this.questions = questions;        
+        this.questions = questions;
       });
+  }
+
+  deleteQuestion() {
+    const id = this.questionId;
+    const question = this.questions.find(x => x.id === id);
+    question.isDeleting = true;
+    this.questionsService.delete(id)
+      .pipe(first())
+      .subscribe(() => {
+        this.questionDeleted = true;
+      });
+  }
+
+  selectQuestion(id: string) {
+    console.log("Select Question Called", id);
+    this.questionId = id;
   }
 }

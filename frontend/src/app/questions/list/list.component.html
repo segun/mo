@@ -15,7 +15,7 @@
 <br />
 <div class="card" *ngFor="let question of questions">
     <div class="card-header">
-        {{question.question}} <sup>*</sup> (1 point)
+        <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> (1 point)
     </div>
     <div class="card-body">
         <img src="{{question.img}}" *ngIf="question.img !== undefined" />
@@ -34,9 +34,43 @@
             </li>
             <li *ngIf="question.option_e !== undefined">
                 {{question.option_e}}
-            </li>      
+            </li>
         </ol>
         Answer: {{question.answer}}
+        <br />
+        <br />
+
+        <a routerLink="edit/{{question.id}}">
+            <button type="button" class="btn btn-primary">Edit</button>
+        </a> &nbsp;&nbsp;
+        <button [disabled]="question.isDeleting" (click)="selectQuestion(question.id)" type="button"
+            class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+            <span *ngIf="question.isDeleting" class="spinner-border spinner-border-sm"></span>
+            <span *ngIf="!question.isDeleting">Delete</span>
+        </button>
     </div>
     <hr />
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" (click)="deleteQuestion()" data-dismiss="modal">Delete
+                    Question</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -12,6 +12,9 @@ ALTER TABLE masep.questions ADD option_b varchar(500) NOT NULL;
 ALTER TABLE masep.questions ADD option_c varchar(500) NOT NULL;
 ALTER TABLE masep.questions ADD option_d varchar(500) NOT NULL;
 ALTER TABLE masep.questions ADD option_e varchar(500) NOT NULL;
+ALTER TABLE masep.questions ADD serial_number bigint NOT NULL;
+ALTER TABLE masep.questions ADD CONSTRAINT questions_uni UNIQUE (serial_number);
+
 
 
 CREATE TABLE masep.user_answers (

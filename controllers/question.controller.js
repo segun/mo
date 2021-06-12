@@ -9,7 +9,18 @@ const newQuestion = async (req, res) => {
 };
 
 
+const viewQuestion = async (req, res) => {
+    questionModel.getById(req, res).then(() => {});
+};
+
+const editQuestion = async (req, res) => {
+    questionModel.editQuestion(req, res).then(() => {});
+}
+
+
 module.exports = {
     index,
     newQuestion,
+    viewQuestion,
+    editQuestion
 }

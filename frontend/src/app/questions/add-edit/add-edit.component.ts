@@ -30,6 +30,7 @@ export class AddEditComponent implements OnInit {
     this.isAddMode = !this.id;
 
     this.form = this.formBuilder.group({
+      serial_number: ['', Validators.required],
       question: ['', Validators.required],
       answer: ['', Validators.required],
       image_url: [''],
@@ -45,6 +46,7 @@ export class AddEditComponent implements OnInit {
         .pipe(first())
         .subscribe(x => {
           this.f.question.setValue(x.question);
+          this.f.serial_number.setValue(x.serial_number);
           this.f.answer.setValue(x.answer);
           this.f.image_url.setValue(x.image_url);
           this.f.option_a.setValue(x.option_a);
@@ -86,6 +88,7 @@ export class AddEditComponent implements OnInit {
           this.router.navigate(['.', { relativeTo: this.route }]);
         },
         error => {
+          console.log(error);
           this.alertService.error(error);
           this.loading = false;
         });
@@ -99,8 +102,8 @@ export class AddEditComponent implements OnInit {
           this.alertService.success('Update successful', { keepAfterRouteChange: true });
           this.router.navigate(['..', { relativeTo: this.route }]);
         },
-        error => {
-          this.alertService.error(error);
+        error => {          
+          this.alertService.error(`Error updating question: ${error}`);
           this.loading = false;
         });
   }

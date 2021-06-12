@@ -1,7 +1,8 @@
 export class Question {
   id: string;
+  serial_number: string;
   question: string;
-  answer: number;
+  answer: string;
   image_url: string;
   option_a: string;
   option_b: string;
