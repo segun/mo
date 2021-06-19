@@ -28,3 +28,21 @@ CREATE TABLE masep.user_answers (
 );
 
 CREATE INDEX user_answers_is_correct_idx ON masep.user_answers (is_correct,answer,question_id,email);
+
+
+CREATE TABLE masep.user_score (
+	id bigint NOT NULL DEFAULT nextval('gs'::regclass),
+	email varchar(255) NULL,
+	score bigint NOT NULL,
+	CONSTRAINT user_score_pk PRIMARY KEY (id)
+);
+
+CREATE INDEX user_score_email_idx ON masep.user_score (email);
+
+CREATE TABLE masep.settings (
+	id bigint NOT NULL DEFAULT nextval('gs'::regclass),
+	"name" varchar(255) NOT NULL,
+	value varchar(500) NOT NULL,
+	CONSTRAINT settings_pk PRIMARY KEY (id)
+);
+CREATE INDEX settings_name_idx ON masep.settings ("name",value);

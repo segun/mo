@@ -1,0 +1,97 @@
+<div class="card container-lg">
+    <div class="card-header">
+        MASEP Computer Skills Competency Test
+    </div>
+    <div class="card-body">
+        <p class="card-text">Please read each question and all answers CAREFULLY before chosing your response</p>
+        <p class="card-text">* = Required</p>
+    </div>
+</div>
+
+<br />
+
+<div class="container-lg">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="email">Email Address:</span>
+        <input [(ngModel)]="email" type="text" class="form-control" placeholder="Email Address"
+            aria-label="Email Address" aria-describedby="email">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        <button [disabled]="loading" class="btn btn-outline-secondary" type="button" id="button-addon1"
+            (click)="checkAvailability()">Check Eligibility</button>
+    </div>
+</div>
+
+<div *ngIf="canTakeExam">
+    <br />
+    <div class="container-lg input-group mb-3">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        <button [disabled]="loading" class="btn btn-success" type="button" id="button-submit-down" data-toggle="modal"
+            data-target="#submitModal">Submit Answers</button>
+    </div>
+    <br />
+    <div class="container-lg card" *ngFor="let question of questions">
+        <div class="card-header">
+            <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> (1 point)
+        </div>
+        <div class="card-body" style="padding-left: 5%;">
+            <img src="{{question.img}}" *ngIf="question.img !== undefined" />
+
+            <div *ngIf="question.option_a !== ''">
+                <input type="radio" id="{{question.serial_number}}_option_a" name="{{question.serial_number}}"
+                    value="option_a" (change)="changed(question.id, question.answer, 'option_a')">
+                <label for="{{question.serial_number}}_option_a">&nbsp;&nbsp;&nbsp;{{question.option_a}}</label>
+            </div>
+
+            <div *ngIf="question.option_b !== ''">
+                <input type="radio" id="{{question.serial_number}}_option_b" name="{{question.serial_number}}"
+                    value="option_b" (change)="changed(question.id, question.answer, 'option_b')">
+                <label for="{{question.serial_number}}_option_b">&nbsp;&nbsp;&nbsp;{{question.option_b}}</label>
+            </div>
+            <div *ngIf="question.option_c !== ''">
+                <input type="radio" id="{{question.serial_number}}_option_c" name="{{question.serial_number}}"
+                    value="option_c" (change)="changed(question.id, question.answer, 'option_c')">
+                <label for="{{question.serial_number}}_option_c">&nbsp;&nbsp;&nbsp;{{question.option_c}}</label>
+            </div>
+            <div *ngIf="question.option_d !== ''">
+                <input type="radio" id="{{question.serial_number}}_option_d" name="{{question.serial_number}}"
+                    value="option_d" (change)="changed(question.id, question.answer, 'option_d')">
+                <label for="{{question.serial_number}}_option_d">&nbsp;&nbsp;&nbsp;{{question.option_d}}</label>
+            </div>
+            <div *ngIf="question.option_e !== ''">
+                <input type="radio" id="{{question.serial_number}}_option_e" name="{{question.serial_number}}"
+                    value="option_e" (change)="changed(question.id, question.answer, 'option_e')">
+                <label for="{{question.serial_number}}_option_e">&nbsp;&nbsp;&nbsp;{{question.option_e}}</label>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <br />
+    <div class="container-lg input-group mb-3">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        <button [disabled]="loading" class="btn btn-success" type="button" id="button-submit-down" data-toggle="modal"
+            data-target="#submitModal">Submit Answers</button>
+    </div>
+</div>
+
+<!-- Submit Modal -->
+<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Submit Answers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit your answers?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" (click)="submit()" data-dismiss="modal">Submit
+                    Answers</button>
+            </div>
+        </div>
+    </div>
+</div>

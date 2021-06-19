@@ -9,18 +9,23 @@ import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { UserAnswersComponent } from './questions/user-answers/user-answers.component';
+
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
+        FormsModule,
         HttpClientModule,
         AppRoutingModule
     ],
     declarations: [
         AppComponent,
         AlertComponent,
-        HomeComponent
+        HomeComponent,
+        UserAnswersComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

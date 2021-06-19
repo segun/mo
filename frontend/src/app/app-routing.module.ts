@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home';
+import { UserAnswersComponent } from './questions/user-answers/user-answers.component';
 import { AuthGuard } from './_helpers';
 
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
@@ -11,6 +12,7 @@ const questionsModule = () => import('./questions/questions.module').then(x => x
 
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'answers', component: UserAnswersComponent},
     { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
     { path: 'offenders', loadChildren: offendersModule, canActivate: [AuthGuard] },
