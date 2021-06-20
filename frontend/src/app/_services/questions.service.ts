@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Question } from '@app/_models/question';
+import { Question, QuestionSettings } from '@app/_models/question';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,15 @@ export class QuestionsService {
 
   public get offenderValue(): Question {
     return this.questionSubject.value;
+  }
+
+
+  saveQuestionSettings(settings) {
+    return this.http.post(`${environment.apiUrl}/questions/settings`, settings);    
+  }
+
+  getSettings() {
+    return this.http.get<QuestionSettings[]>(`${environment.apiUrl}/questions/settings`);
   }
 
   getAll() {

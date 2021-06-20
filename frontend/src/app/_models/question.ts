@@ -10,3 +10,10 @@ export class Question {
   option_d: string;
   option_e: string;
 }
+
+
+export class QuestionSettings {
+  id: string;
+  name: string;
+  value: string;
+}

@@ -5,6 +5,63 @@ const query = require('./dbQuery');
 const status = require('http-status-codes');
 
 
+async function saveQuestionSettings(req, res) {
+    console.log(req.body);
+    const admin_email = req.body.admin_email;
+    const cutoff_mark = req.body.cutoff_mark;
+
+    try {
+        const insertQuery = "INSERT INTO masep.settings (name, value) VALUES ($1, $2)";
+        let values = ['admin_email', admin_email];
+        await query(insertQuery, values);
+        values = ['cutoff_mark', cutoff_mark];
+        await query(insertQuery, values);
+        successMessage.message = "Settings Saved successfully";
+        return res.status(status.StatusCodes.ACCEPTED).send(successMessage);
+    } catch (error) {
+        if (error.routine === '_bt_check_unique') {
+            console.log('Unique Constraint Violation');
+            try {
+                const updateQuery = "UPDATE masep.settings SET value = $2 WHERE name = $1";
+                let values = ['admin_email', admin_email];
+                await query(updateQuery, values);
+                values = ['cutoff_mark', cutoff_mark];
+                await query(updateQuery, values);
+                successMessage.message = "Settings Saved successfully";
+                return res.status(status.StatusCodes.ACCEPTED).send(successMessage);
+            } catch (error) {
+                console.log(error);
+                errorMessage.error = 'Operation was not successful, Contact Administrator';
+                return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+            }
+        } else {
+            console.log(error);
+            errorMessage.error = 'Operation was not successful, Contact Administrator';
+            return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+        }
+
+    }
+}
+
+async function getQuestionSettings(_req, res) {
+    const selectQuery = "SELECT * FROM masep.settings WHERE name in ('admin_email', 'cutoff_mark')";
+    const values = [];
+    try {
+        const { rows } = await query(selectQuery, values);
+        const dbResponse = [];
+        for (row of rows) {
+            dbResponse.push(row);
+        }
+
+        return res.status(status.StatusCodes.ACCEPTED).send(dbResponse);
+
+    } catch (error) {
+        console.log(error);
+        errorMessage.error = 'Operation was not successful, Contact Administrator';
+        return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+    }
+}
+
 async function getAllQuestions(_req, res) {
     const selectQuery = "SELECT * FROM masep.questions order by serial_number asc";
     values = [];
@@ -48,7 +105,7 @@ async function editQuestion(req, res) {
             serial_number = $9
             WHERE id = $10 returning *`
     const values = [
-        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, questionId        
+        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, questionId
     ];
 
     try {
@@ -122,5 +179,7 @@ module.exports = {
     addNewQuestion,
     getAllQuestions,
     getById,
-    editQuestion
+    editQuestion,
+    getQuestionSettings,
+    saveQuestionSettings
 };

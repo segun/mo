@@ -46,3 +46,4 @@ CREATE TABLE masep.settings (
 	CONSTRAINT settings_pk PRIMARY KEY (id)
 );
 CREATE INDEX settings_name_idx ON masep.settings ("name",value);
+ALTER TABLE masep.settings ADD CONSTRAINT settings_un UNIQUE ("name");
