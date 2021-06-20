@@ -14,7 +14,7 @@
 
 <div class="card">
     <div class="card-header">
-        Question Setting
+        Question Settings
     </div>
     <div class="card-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -36,6 +36,15 @@
                 <div *ngIf="f.cutoff_mark.errors.required">Cutoff Mark</div>
               </div>
             </div>
+
+            <div class="form-group col">
+                <label for="question">Admin Phone Number<sup>*</sup></label>
+                <input type="text" formControlName="admin_phone_number" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f.admin_phone_number.errors }" />
+                <div *ngIf="submitted && f.admin_phone_number.errors" class="invalid-feedback">
+                  <div *ngIf="f.admin_phone_number.errors.required">Admin Phone Number</div>
+                </div>
+              </div>            
           </div>  
           <div class="form-group col">
             <button class="btn btn-primary">

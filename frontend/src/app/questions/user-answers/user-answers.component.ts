@@ -14,6 +14,7 @@ export class UserAnswersComponent implements OnInit {
   canTakeExam = false;
   passedCutoff = false;
   loading = false;
+  adminPhonenumber = "0000-0000-0000";
   userAnswers = {};
 
   constructor(
@@ -29,6 +30,17 @@ export class UserAnswersComponent implements OnInit {
         this.questions = questions;
         console.log(questions);
       });
+
+    this.questionsService.getSettings()
+      .pipe(first())
+      .subscribe(questionSettings => {
+        questionSettings.forEach(qs => {
+          console.log(qs);
+          if (qs.name === 'admin_phone_number') {
+            this.adminPhonenumber = qs.value;
+          }
+        })
+      });
   }
 
   submit() {
@@ -38,9 +50,10 @@ export class UserAnswersComponent implements OnInit {
         data => {
           this.passedCutoff = data['passedCutoff'];
           if (this.passedCutoff) {
-            this.alertService.success(`Passed`);
+            this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);
+            // TODO: Show contact form
           } else {
-            this.alertService.success(`Failed`);
+            this.alertService.error(`You are not eligible for online classes. Please contact MASEP at ${this.adminPhonenumber} to schedule your in-person class.`);
           }
           this.loading = false;
           this.canTakeExam = false;

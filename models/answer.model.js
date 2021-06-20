@@ -49,7 +49,7 @@ async function submitAnswers(req, res) {
 
 
         // TODO: 
-        // Send Email to specified address (specify in properties file)        
+        // Send Email to specified address
 
         const cutoffQuery = "SELECT value FROM masep.settings WHERE name = 'cutoff_mark'";
         const {rows} = await query(cutoffQuery, []);

@@ -9,42 +9,59 @@ async function saveQuestionSettings(req, res) {
     console.log(req.body);
     const admin_email = req.body.admin_email;
     const cutoff_mark = req.body.cutoff_mark;
+    const admin_phone_number = req.body.admin_phone_number;
 
+    const insertQuery = "INSERT INTO masep.settings (name, value) VALUES ($1, $2)";
+    const updateQuery = "UPDATE masep.settings SET value = $2 WHERE name = $1";
+
+    errored = false;
     try {
-        const insertQuery = "INSERT INTO masep.settings (name, value) VALUES ($1, $2)";
         let values = ['admin_email', admin_email];
         await query(insertQuery, values);
-        values = ['cutoff_mark', cutoff_mark];
-        await query(insertQuery, values);
-        successMessage.message = "Settings Saved successfully";
-        return res.status(status.StatusCodes.ACCEPTED).send(successMessage);
     } catch (error) {
         if (error.routine === '_bt_check_unique') {
-            console.log('Unique Constraint Violation');
-            try {
-                const updateQuery = "UPDATE masep.settings SET value = $2 WHERE name = $1";
-                let values = ['admin_email', admin_email];
-                await query(updateQuery, values);
-                values = ['cutoff_mark', cutoff_mark];
-                await query(updateQuery, values);
-                successMessage.message = "Settings Saved successfully";
-                return res.status(status.StatusCodes.ACCEPTED).send(successMessage);
-            } catch (error) {
-                console.log(error);
-                errorMessage.error = 'Operation was not successful, Contact Administrator';
-                return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
-            }
+            let values = ['admin_email', admin_email];
+            await query(updateQuery, values);
         } else {
-            console.log(error);
-            errorMessage.error = 'Operation was not successful, Contact Administrator';
-            return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+            errored = true;
         }
+    }
 
+    try {
+        values = ['cutoff_mark', cutoff_mark];
+        await query(insertQuery, values);
+    } catch (error) {
+        if (error.routine === '_bt_check_unique') {
+            values = ['cutoff_mark', cutoff_mark];
+            await query(updateQuery, values);
+        } else {
+            errored = true;
+        }
+    }
+    try {
+        values = ['admin_phone_number', admin_phone_number];
+        await query(insertQuery, values);
+    } catch (error) {
+        if (error.routine === '_bt_check_unique') {
+            values = ['admin_phone_number', admin_phone_number];
+            await query(updateQuery, values);
+        } else {
+            errored = true;
+        }
+    }
+
+    if (errored) {
+        console.log(error);
+        errorMessage.error = 'Operation was not successful, Contact Administrator';
+        return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+    } else {
+        successMessage.message = "Settings Saved successfully";
+        return res.status(status.StatusCodes.ACCEPTED).send(successMessage);
     }
 }
 
 async function getQuestionSettings(_req, res) {
-    const selectQuery = "SELECT * FROM masep.settings WHERE name in ('admin_email', 'cutoff_mark')";
+    const selectQuery = "SELECT * FROM masep.settings";
     const values = [];
     try {
         const { rows } = await query(selectQuery, values);

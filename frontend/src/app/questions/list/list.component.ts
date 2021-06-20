@@ -27,6 +27,7 @@ export class ListComponent implements OnInit {
     this.form = this.formBuilder.group({
       admin_email: ['', Validators.compose([Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")])],
       cutoff_mark: ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])],
+      admin_phone_number: ['', Validators.required],
     });
 
     this.questionsService.getAll()
@@ -45,6 +46,10 @@ export class ListComponent implements OnInit {
 
           if(qs.name === 'cutoff_mark') {
             this.f.cutoff_mark.setValue(qs.value);
+          }
+          
+          if(qs.name === 'admin_phone_number') {
+            this.f.admin_phone_number.setValue(qs.value);
           }          
         })
       });
