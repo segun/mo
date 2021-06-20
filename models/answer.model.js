@@ -45,11 +45,7 @@ async function submitAnswers(req, res) {
         const values = [answer.email, sum];
         await query(insertScoreQuery, values);
 
-        successMessage.message = "Answers Submitted Successfully";        
-
-
-        // TODO: 
-        // Send Email to specified address
+        successMessage.message = "Answers Submitted Successfully";                
 
         const cutoffQuery = "SELECT value FROM masep.settings WHERE name = 'cutoff_mark'";
         const {rows} = await query(cutoffQuery, []);

@@ -50,8 +50,7 @@ export class UserAnswersComponent implements OnInit {
         data => {
           this.passedCutoff = data['passedCutoff'];
           if (this.passedCutoff) {
-            this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);
-            // TODO: Show contact form
+            this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);            
           } else {
             this.alertService.error(`You are not eligible for online classes. Please contact MASEP at ${this.adminPhonenumber} to schedule your in-person class.`);
           }
@@ -87,7 +86,7 @@ export class UserAnswersComponent implements OnInit {
         data => {
           this.canTakeExam = Boolean(data);
           if (!this.canTakeExam) {
-            this.alertService.error(`You have already taken this test and your score recorded. If you wish to retake the test, please contact administrator`);
+            this.alertService.error(`You have already taken this test and your score recorded. Please contact MASEP at ${this.adminPhonenumber}`);
           }
           console.log(this.canTakeExam);
           this.loading = false;

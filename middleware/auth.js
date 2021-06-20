@@ -13,8 +13,7 @@ const verifyToken = async (req, res, next) => {
         req.user = {
             username: decoded.username,
             password: decoded.password
-        };
-        //TODOfu: Validate username and password against the DB.
+        };        
         next();
     } catch (error) {
         const errorMessage = 'Authentication Failed: ' + error;
