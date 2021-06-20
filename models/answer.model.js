@@ -45,12 +45,22 @@ async function submitAnswers(req, res) {
         const values = [answer.email, sum];
         await query(insertScoreQuery, values);
 
-        successMessage.message = "Answers Submitted Successfully";
-        successMessage.passedCutoff = false;
+        successMessage.message = "Answers Submitted Successfully";        
 
-        // TODO: Check for cutoff, if passed cutoff
-        // Send Email to specified address (specify in properties file)
-        // send success response to front end so that contact form can be shown
+
+        // TODO: 
+        // Send Email to specified address (specify in properties file)        
+
+        const cutoffQuery = "SELECT value FROM masep.settings WHERE name = 'cutoff_mark'";
+        const {rows} = await query(cutoffQuery, []);
+        const row = rows[0];
+        if(row.value === undefined) {
+            errorMessage.error = 'Cutoff Mark is not defined';
+            console.log(errorMessage);
+            return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);            
+        } else {
+            successMessage.passedCutoff = sum >= row.value;
+        }
 
         return res.status(status.StatusCodes.CREATED).send(successMessage);
     } catch (error) {
