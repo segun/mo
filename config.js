@@ -11,6 +11,14 @@ const props = {
         port: "5432",
         database: "masep",        
     },
+    email: {
+        service: "gmail",
+        auth: {
+            user: "trinisoftinc@gmail.com",
+            pass: "twenty miles from home",
+        },
+        from: "trinisoftinc@gmail.com",        
+    },
     env: {
         JWT_SECRET: "ruGraf-8wq6t-fraQgt-Sdfw3r",
     },

@@ -47,3 +47,8 @@ CREATE TABLE masep.settings (
 );
 CREATE INDEX settings_name_idx ON masep.settings ("name",value);
 ALTER TABLE masep.settings ADD CONSTRAINT settings_un UNIQUE ("name");
+
+ALTER TABLE masep.user_score ADD pass boolean NOT NULL;
+ALTER TABLE masep.user_score ADD cutoff_used bigint NOT NULL;
+
+ALTER TABLE masep.user_score ADD date_taken timestamp(0) NOT NULL DEFAULT now();

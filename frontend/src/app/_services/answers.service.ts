@@ -21,6 +21,9 @@ export class AnswersService {
     return this.answerSubject.value;
   }
 
+  submitContactForm(form) {
+    return this.http.post(`${environment.apiUrl}/answers/contactForm`, form);
+  }
   
   submitAnswers(answers) {
     return this.http.post(`${environment.apiUrl}/answers/submit`, answers);

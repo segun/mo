@@ -3,7 +3,8 @@ const successMessage = {};
 const errorMessage = {};
 const query = require('./dbQuery');
 const status = require('http-status-codes');
-
+const nodemailer = require('nodemailer');
+const props = require('../config');
 
 async function checkAvailability(req, res) {
     const email = req.params.email;
@@ -17,6 +18,85 @@ async function checkAvailability(req, res) {
         errorMessage.error = 'Operation was not successful, Contact Administrator';
         return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
     }
+}
+
+async function submitContactForm(req, res) {
+    // TODO Send Email To Admin
+
+    const selectQuery = "SELECT value FROM masep.settings WHERE name = 'admin_email'";
+    const values = [];
+    try {
+        const { rows } = await query(selectQuery, values);
+        const adminEmail = rows[0].value;
+
+        const mailText = `
+        <h3>New User Registration</h3><br />
+        <h4>Email Address: ${req.body.email}</h4><br />
+        <h4>Phone Number: ${req.body.phoneNumber}</h4><br />
+        <h4>Full Name: ${req.body.fullName}</h4><br />`;
+
+        const transpoter = nodemailer.createTransport(props.email);
+        const mailOptions = {
+            from: props.email.from,
+            to: adminEmail,
+            subject: 'New user Registration',
+            html: mailText
+        }
+
+        transpoter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                throw (error);
+            } else {
+                successMessage.message = "Contact Information Saved Successfully";
+                return res.status(status.StatusCodes.CREATED).send(successMessage);
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        errorMessage.error = 'Operation was not successful, Contact Administrator';
+        return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+    }
+}
+
+sendPassedEmail = (email) => {
+    const mailText = `
+        <h3>You Passed!!!</h3><br />
+        <h4>You meet the criteria for online classes. If you are interested, please fill out the contact form on the page. We will be in touch</h4>
+        `;
+    const transpoter = nodemailer.createTransport(props.email);
+    const mailOptions = {
+        from: props.email.from,
+        to: email,
+        subject: 'Masep Computer Test',
+        html: mailText
+    }
+
+    transpoter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            throw (error);
+        }
+    });
+}
+
+sendFailedEmail = (email) => {
+    const mailText = `
+    <h3>You Didn't meet cutoff mark</h3><br />
+    <h4>You are not eligible for online classes. Please contact MASEP at [phone number] to schedule your in-person class.</h4>
+    `;
+    const transpoter = nodemailer.createTransport(props.email);
+    const mailOptions = {
+        from: props.email.from,
+        to: email,
+        subject: 'Masep Computer Test',
+        html: mailText
+    }
+
+    transpoter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            throw (error);
+        }
+    });
 }
 
 async function submitAnswers(req, res) {
@@ -41,21 +121,27 @@ async function submitAnswers(req, res) {
             await query(inserAnswerQuery, values);
         });
 
-        const insertScoreQuery = "INSERT INTO masep.user_score (email, score) VALUES ($1, $2) returning *";
-        const values = [answer.email, sum];
-        await query(insertScoreQuery, values);
-
-        successMessage.message = "Answers Submitted Successfully";                
-
         const cutoffQuery = "SELECT value FROM masep.settings WHERE name = 'cutoff_mark'";
-        const {rows} = await query(cutoffQuery, []);
+        const { rows } = await query(cutoffQuery, []);
         const row = rows[0];
-        if(row.value === undefined) {
+        if (row.value === undefined) {
             errorMessage.error = 'Cutoff Mark is not defined';
             console.log(errorMessage);
-            return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);            
+            return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
         } else {
             successMessage.passedCutoff = sum >= row.value;
+        }
+
+        const insertScoreQuery = "INSERT INTO masep.user_score (email, score, pass, cutoff_used) VALUES ($1, $2, $3, $4) returning *";
+        const values = [answer.email, sum, successMessage.passedCutoff, row.value];
+        await query(insertScoreQuery, values);
+
+        successMessage.message = "Answers Submitted Successfully";
+        
+        if (successMessage.passedCutoff) {
+            sendPassedEmail(answer.email);
+        } else {
+            sendFailedEmail(answer.email);
         }
 
         return res.status(status.StatusCodes.CREATED).send(successMessage);
@@ -68,5 +154,6 @@ async function submitAnswers(req, res) {
 
 module.exports = {
     checkAvailability,
-    submitAnswers
+    submitAnswers,
+    submitContactForm
 };
