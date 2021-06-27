@@ -47,3 +47,15 @@ CREATE TABLE masep.settings (
 );
 CREATE INDEX settings_name_idx ON masep.settings ("name",value);
 ALTER TABLE masep.settings ADD CONSTRAINT settings_un UNIQUE ("name");
+
+alter table masep.user_answers drop constraint user_answers_fk;
+
+INSERT INTO masep.settings
+(id, "name", value)
+VALUES(96, 'cutoff_mark', '3');
+INSERT INTO masep.settings
+(id, "name", value)
+VALUES(133, 'admin_phone_number', '0112345678');
+INSERT INTO masep.settings
+(id, "name", value)
+VALUES(95, 'admin_email', 'tobi.lasisi@gmail.com');

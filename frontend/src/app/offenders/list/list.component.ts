@@ -32,8 +32,14 @@ export class ListComponent implements OnInit {
     this.offenderService.delete(id)
       .pipe(first())
       .subscribe(() => {
-        this.displayedOffenders = this.offenders.filter(x => x.id !== id);
-        this.offenderDeleted = true;
+        this.offenderService.getAll()
+        .pipe(first())
+        .subscribe(offenders => {
+          this.offenders = offenders;
+          this.displayedOffenders = offenders;
+          offender.isDeleting = false;
+          this.offenderDeleted = true;                  
+        });
       });
   }
 
@@ -49,9 +55,14 @@ export class ListComponent implements OnInit {
     this.offenderService.completeClass(id)
       .pipe(first())
       .subscribe(() => {
-        this.displayedOffenders = this.offenders.filter(x => x.id !== id);
-        offender.isCompletingClass = false;
-        this.classCompleted = true;
+        this.offenderService.getAll()
+        .pipe(first())
+        .subscribe(offenders => {
+          this.offenders = offenders;
+          this.displayedOffenders = offenders;
+          offender.isCompletingClass = false;
+          this.classCompleted = true;           
+        });
       });
   }
 
