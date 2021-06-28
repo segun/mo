@@ -4,6 +4,7 @@ import { QuestionsService } from '@app/_services/questions.service';
 import { AnswersService } from '@app/_services/answers.service';
 import { AlertService } from '@app/_services';
 import { Answer } from '@app/_models/answer';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './user-answers.component.html',
@@ -16,12 +17,21 @@ export class UserAnswersComponent implements OnInit {
   loading = false;
   adminPhonenumber = "0000-0000-0000";
   userAnswers = {};
+  form: FormGroup;
+  submitted = false;
 
   constructor(
     private questionsService: QuestionsService,
     private answersService: AnswersService,
-    private alertService: AlertService
-  ) { }
+    private alertService: AlertService,
+    private formBuilder: FormBuilder,
+  ) {
+    this.form = this.formBuilder.group({
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      fullName: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.questionsService.getAll()
@@ -43,14 +53,46 @@ export class UserAnswersComponent implements OnInit {
       });
   }
 
+  get f() { return this.form.controls; }
+
+  onContactFormSubmit() {
+    console.log('Contact Form Submitting');
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.answersService.submitContactForm(this.form.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.alertService.success('Your information was submitted successfully', { keepAfterRouteChange: true });
+          this.canTakeExam = false;
+          this.passedCutoff = false;
+          this.loading = false;
+        },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+        });    
+  }
+
   submit() {
+    this.alertService.clear();    
     this.answersService.submitAnswers(this.userAnswers)
       .pipe(first())
       .subscribe(
         data => {
           this.passedCutoff = data['passedCutoff'];
           if (this.passedCutoff) {
-            this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);            
+            this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);
           } else {
             this.alertService.error(`You are not eligible for online classes. Please contact MASEP at ${this.adminPhonenumber} to schedule your in-person class.`);
           }
@@ -77,6 +119,9 @@ export class UserAnswersComponent implements OnInit {
   }
 
   checkAvailability() {
+    this.alertService.clear();
+    this.passedCutoff = false;
+
     console.log('Check availability');
 
     this.loading = true;
@@ -87,7 +132,10 @@ export class UserAnswersComponent implements OnInit {
           this.canTakeExam = Boolean(data);
           if (!this.canTakeExam) {
             this.alertService.error(`You have already taken this test and your score recorded. Please contact MASEP at ${this.adminPhonenumber}`);
+          } else {
+            this.f.email.setValue(this.email);
           }
+
           console.log(this.canTakeExam);
           this.loading = false;
         },

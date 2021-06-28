@@ -59,3 +59,7 @@ VALUES(133, 'admin_phone_number', '0112345678');
 INSERT INTO masep.settings
 (id, "name", value)
 VALUES(95, 'admin_email', 'tobi.lasisi@gmail.com');
+ALTER TABLE masep.user_score ADD pass boolean NOT NULL;
+ALTER TABLE masep.user_score ADD cutoff_used bigint NOT NULL;
+
+ALTER TABLE masep.user_score ADD date_taken timestamp(0) NOT NULL DEFAULT now();
