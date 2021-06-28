@@ -34,7 +34,7 @@
             <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> (1 point)
         </div>
         <div class="card-body" style="padding-left: 5%;">
-            <img src="{{question.image_url}}" *ngIf="question.image_url !== ''" style="width:200px; height: 200px"/>
+            <img src="{{question.image_url}}" *ngIf="question.image_url !== ''" style="width:200px; height: 200px" />
 
             <div *ngIf="question.option_a !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_a" name="{{question.serial_number}}"
@@ -76,8 +76,9 @@
 <!-- Contact Form Div -->
 <div class="container-lg" *ngIf="passedCutoff">
     <div class="card">
-        <div class="card-header">
-            You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch
+        <div class="card-header" style="background-color: darkgreen; color: white;">
+            You met the criteria for online classes. If you are interested, please fill out the contact form below. We
+            will be in touch
         </div>
         <div class="card-content" style="padding: 15px 15px">
             <form [formGroup]="form" (ngSubmit)="onContactFormSubmit()">
@@ -90,7 +91,9 @@
                             <div *ngIf="f.email.errors.required">Email is required</div>
                         </div>
                     </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group col">
                         <label for="phoneNumber">Phone Number</label>
                         <input type="text" formControlName="phoneNumber" class="form-control"
@@ -99,7 +102,9 @@
                             <div *ngIf="f.phoneNumber.errors.required">Phone Number is required</div>
                         </div>
                     </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group col">
                         <label for="fullName">Full Name</label>
                         <input type="text" formControlName="fullName" class="form-control"
@@ -108,15 +113,15 @@
                             <div *ngIf="f.fullName.errors.required">Full Name is required</div>
                         </div>
                     </div>
-                </div>    
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <button [disabled]="loading" class="btn btn-primary">
-                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                          Submit Contact Information
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Submit Contact Information
                         </button>
-                      </div>                    
-                </div>            
+                    </div>
+                </div>
             </form>
         </div>
     </div>

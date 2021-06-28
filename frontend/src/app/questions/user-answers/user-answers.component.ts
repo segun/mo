@@ -90,14 +90,14 @@ export class UserAnswersComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
+          this.canTakeExam = false;
           this.passedCutoff = data['passedCutoff'];
-          if (this.passedCutoff) {
+          if (this.passedCutoff) {          
             this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);
           } else {
             this.alertService.error(`You are not eligible for online classes. Please contact MASEP at ${this.adminPhonenumber} to schedule your in-person class.`);
           }
-          this.loading = false;
-          this.canTakeExam = false;
+          this.loading = false;          
           this.email = '';
         },
         error => {

@@ -43,14 +43,14 @@ async function submitContactForm(req, res) {
             html: mailText
         }
 
-        transpoter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                throw (error);
-            } else {
-                successMessage.message = "Contact Information Saved Successfully";
-                return res.status(status.StatusCodes.CREATED).send(successMessage);
-            }
-        });
+        // transpoter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         throw (error);
+        //     } else {
+        //         successMessage.message = "Contact Information Saved Successfully";
+        //         return res.status(status.StatusCodes.CREATED).send(successMessage);
+        //     }
+        // });
 
     } catch (error) {
         console.log(error);
@@ -72,11 +72,11 @@ sendPassedEmail = (email) => {
         html: mailText
     }
 
-    transpoter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            throw (error);
-        }
-    });
+    // transpoter.sendMail(mailOptions, (error, info) => {
+    //     if (error) {
+    //         throw (error);
+    //     }
+    // });
 }
 
 sendFailedEmail = (email) => {
@@ -92,11 +92,11 @@ sendFailedEmail = (email) => {
         html: mailText
     }
 
-    transpoter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            throw (error);
-        }
-    });
+    // transpoter.sendMail(mailOptions, (error, info) => {
+    //     if (error) {
+    //         throw (error);
+    //     }
+    // });
 }
 
 async function submitAnswers(req, res) {
