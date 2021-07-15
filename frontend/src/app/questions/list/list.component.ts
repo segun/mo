@@ -40,17 +40,17 @@ export class ListComponent implements OnInit {
       .pipe(first())
       .subscribe(questionSettings => {
         questionSettings.forEach(qs => {
-          if(qs.name === 'admin_email') {
+          if (qs.name === 'admin_email') {
             this.f.admin_email.setValue(qs.value);
           }
 
-          if(qs.name === 'cutoff_mark') {
+          if (qs.name === 'cutoff_mark') {
             this.f.cutoff_mark.setValue(qs.value);
           }
-          
-          if(qs.name === 'admin_phone_number') {
+
+          if (qs.name === 'admin_phone_number') {
             this.f.admin_phone_number.setValue(qs.value);
-          }          
+          }
         })
       });
   }
@@ -83,6 +83,9 @@ export class ListComponent implements OnInit {
   get f() { return this.form.controls; }
 
   deleteQuestion() {
+    // reset alerts on submit
+    this.alertService.clear();
+
     const id = this.questionId;
     const question = this.questions.find(x => x.id === id);
     question.isDeleting = true;
@@ -90,6 +93,13 @@ export class ListComponent implements OnInit {
       .pipe(first())
       .subscribe(() => {
         this.questionDeleted = true;
+        question.isDeleting = false;
+        this.alertService.success('Question Deleted Successfully', { keepAfterRouteChange: true });
+        this.questionsService.getAll()
+          .pipe(first())
+          .subscribe(questions => {
+            this.questions = questions;
+          });
       });
   }
 

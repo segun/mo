@@ -10,5 +10,6 @@ router.post('/settings', questionController.saveQuestionSettings);
 router.post('/new', questionController.newQuestion);
 router.get('/:questionId', questionController.viewQuestion);
 router.put('/:questionId', questionController.editQuestion);
+router.delete('/:questionId', questionController.deleteQuestion);
 
 module.exports = router;

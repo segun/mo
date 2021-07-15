@@ -17,6 +17,10 @@ const editQuestion = async (req, res) => {
     questionModel.editQuestion(req, res).then(() => {});
 }
 
+const deleteQuestion = async (req, res) => {
+    questionModel.deleteQuestion(req, res).then(() => {});
+}
+
 const getQuestionSettings = async (req, res) => {
     questionModel.getQuestionSettings(req, res).then(() => {});
 }
@@ -30,6 +34,7 @@ module.exports = {
     newQuestion,
     viewQuestion,
     editQuestion,
+    deleteQuestion,
     getQuestionSettings,
     saveQuestionSettings
 }

@@ -80,7 +80,7 @@ async function getQuestionSettings(_req, res) {
 }
 
 async function getAllQuestions(_req, res) {
-    const selectQuery = "SELECT * FROM masep.questions order by serial_number asc";
+    const selectQuery = "SELECT * FROM masep.questions where archived = 'false' order by serial_number asc";
     values = [];
     try {
         const { rows } = await query(selectQuery, values);
@@ -96,6 +96,23 @@ async function getAllQuestions(_req, res) {
         errorMessage.error = 'Operation was not successful, Contact Administrator';
         return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
     }
+}
+
+async function deleteQuestion(req, res) {
+    const questionId = req.params.questionId;
+    const updateQuery = "UPDATE masep.questions SET archived = 'true' WHERE id = $1";    
+    const values = [questionId];
+
+    console.log('Deleting.....');
+    try {
+        await query(updateQuery, values);
+        console.log('Deleted.....');
+        return res.status(status.StatusCodes.ACCEPTED).send("");
+    } catch (error) {
+        console.log(error);
+        errorMessage.error = 'Operation was not successful';
+        return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
+    }    
 }
 
 async function editQuestion(req, res) {
@@ -197,6 +214,7 @@ module.exports = {
     getAllQuestions,
     getById,
     editQuestion,
+    deleteQuestion,
     getQuestionSettings,
     saveQuestionSettings
 };

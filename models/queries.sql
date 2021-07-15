@@ -63,3 +63,5 @@ ALTER TABLE masep.user_score ADD pass boolean NOT NULL;
 ALTER TABLE masep.user_score ADD cutoff_used bigint NOT NULL;
 
 ALTER TABLE masep.user_score ADD date_taken timestamp(0) NOT NULL DEFAULT now();
+
+ALTER TABLE masep.questions ADD archived boolean NOT NULL DEFAULT false;
