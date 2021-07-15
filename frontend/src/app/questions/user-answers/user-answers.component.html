@@ -34,7 +34,7 @@
             <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> (1 point)
         </div>
         <div class="card-body" style="padding-left: 5%;">
-            <img src="{{question.image_url}}" *ngIf="question.image_url !== ''" style="width:200px; height: 200px" />
+            <img src="{{question.image_url}}" *ngIf="question.image_url !== ''"/>
 
             <div *ngIf="question.option_a !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_a" name="{{question.serial_number}}"
