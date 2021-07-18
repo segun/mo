@@ -17,20 +17,13 @@ const props = {
         // database: "masep",        
     },
     email: {
-        service: "gmail",
-        auth: {
-            user: "trinisoftinc@gmail.com",
-            pass: "twenty miles from home",
+        host: "mail.msussrc.com",
+        port: 25,
+        secure: false,
+        tls: {
+            rejectUnauthorized: false
         },
-        from: "trinisoftinc@gmail.com",        
-    },
-    email: {
-        service: "gmail",
-        auth: {
-            user: "trinisoftinc@gmail.com",
-            pass: "twenty miles from home",
-        },
-        from: "trinisoftinc@gmail.com",        
+        from: "register@masep.org",        
     },
     env: {
         JWT_SECRET: "ruGraf-8wq6t-fraQgt-Sdfw3r",

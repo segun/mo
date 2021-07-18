@@ -27,7 +27,7 @@ export class UserAnswersComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {
     this.form = this.formBuilder.group({
-      email: ['', Validators.required],
+      email: ['', Validators.email],
       phoneNumber: ['', Validators.required],
       fullName: ['', Validators.required],
     });
@@ -81,23 +81,23 @@ export class UserAnswersComponent implements OnInit {
         error => {
           this.alertService.error(error);
           this.loading = false;
-        });    
+        });
   }
 
   submit() {
-    this.alertService.clear();    
+    this.alertService.clear();
     this.answersService.submitAnswers(this.userAnswers)
       .pipe(first())
       .subscribe(
         data => {
           this.canTakeExam = false;
           this.passedCutoff = data['passedCutoff'];
-          if (this.passedCutoff) {          
+          if (this.passedCutoff) {
             this.alertService.success(`You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`);
           } else {
             this.alertService.error(`You are not eligible for online classes. Please contact MASEP at ${this.adminPhonenumber} to schedule your in-person class.`);
           }
-          this.loading = false;          
+          this.loading = false;
           this.email = '';
         },
         error => {
@@ -118,12 +118,22 @@ export class UserAnswersComponent implements OnInit {
     console.log(this.userAnswers);
   }
 
+
+  validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
   checkAvailability() {
     this.alertService.clear();
     this.passedCutoff = false;
 
     console.log('Check availability');
 
+    if(!this.validateEmail(this.email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
     this.loading = true;
     this.answersService.checkAvailability(this.email)
       .pipe(first())
