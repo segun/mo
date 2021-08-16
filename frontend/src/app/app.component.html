@@ -1,7 +1,7 @@
 ﻿<!-- nav -->
 <img src="assets/img/masep_logo.png">
 <div [ngClass]="{ 'bg-light': user }"> 
-<p>MASEP Registration System, a web application to register DUI offenders attending online classes</p>
+<p *ngIf="user">MASEP Registration System, a web application to register DUI offenders attending online classes</p>
 </div>
 <style>
     .container {

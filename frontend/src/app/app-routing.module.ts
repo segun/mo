@@ -12,7 +12,7 @@ const questionsModule = () => import('./questions/questions.module').then(x => x
 
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'answers', component: UserAnswersComponent},
+    { path: 'competency-test', component: UserAnswersComponent },
     { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
     { path: 'offenders', loadChildren: offendersModule, canActivate: [AuthGuard] },
