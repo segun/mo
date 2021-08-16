@@ -9,6 +9,7 @@ export class Question {
   option_c: string;
   option_d: string;
   option_e: string;
+  points: number;
 }
 
 

@@ -5,6 +5,7 @@ const query = require('./dbQuery');
 const status = require('http-status-codes');
 const nodemailer = require('nodemailer');
 const props = require('../config');
+const { toNumber } = require("lodash");
 
 async function checkAvailability(req, res) {
     const email = req.params.email;
@@ -108,7 +109,7 @@ async function submitAnswers(req, res) {
             answer = req.body[key];
 
             if (answer.is_correct) {
-                sum++;
+                sum += toNumber(answer.points);
             }
             const inserAnswerQuery = "INSERT INTO masep.user_answers (email, question_id, answer, is_correct) VALUES ($1, $2, $3, $4) returning *";
             const values = [
@@ -129,7 +130,7 @@ async function submitAnswers(req, res) {
             console.log(errorMessage);
             return res.status(status.StatusCodes.INTERNAL_SERVER_ERROR).send(errorMessage);
         } else {
-            successMessage.passedCutoff = sum >= row.value;
+            successMessage.passedCutoff = sum >= toNumber(row.value);
         }
 
         const insertScoreQuery = "INSERT INTO masep.user_score (email, score, pass, cutoff_used) VALUES ($1, $2, $3, $4) returning *";

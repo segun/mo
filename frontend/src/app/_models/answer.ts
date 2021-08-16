@@ -4,4 +4,5 @@ export class Answer {
   question_id: string;
   answer: string;
   is_correct: boolean;
+  points: number;
 }

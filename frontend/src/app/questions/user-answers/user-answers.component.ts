@@ -106,15 +106,16 @@ export class UserAnswersComponent implements OnInit {
         });
   }
 
-  changed(id, answer, userAnswer) {
+  changed(question, userAnswer) {
     const answerObject: Answer = {
-      question_id: id,
+      question_id: question.id,
       answer: userAnswer,
-      is_correct: answer === userAnswer,
-      email: this.email
+      is_correct: question.answer === userAnswer,
+      email: this.email,
+      points: question.points
     }
 
-    this.userAnswers[id] = answerObject;
+    this.userAnswers[question.id] = answerObject;
     console.log(this.userAnswers);
   }
 
@@ -130,7 +131,7 @@ export class UserAnswersComponent implements OnInit {
 
     console.log('Check availability');
 
-    if(!this.validateEmail(this.email)) {
+    if (!this.validateEmail(this.email)) {
       alert('Please enter a valid email address');
       return;
     }

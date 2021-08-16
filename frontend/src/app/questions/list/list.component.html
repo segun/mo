@@ -18,50 +18,51 @@
     </div>
     <div class="card-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-row">
-            <div class="form-group col">
-              <label for="admin_email">Admin Email<sup>*</sup></label>
-              <input type="text" formControlName="admin_email" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.admin_email.errors }" />
-              <div *ngIf="submitted && f.admin_email.errors" class="invalid-feedback">
-                <div *ngIf="f.admin_email.errors.required">Admin Email</div>
-              </div>
-            </div>
-        
-            <div class="form-group col">
-              <label for="question">Cutoff Mark<sup>*</sup></label>
-              <input type="text" formControlName="cutoff_mark" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.cutoff_mark.errors }" />
-              <div *ngIf="submitted && f.cutoff_mark.errors" class="invalid-feedback">
-                <div *ngIf="f.cutoff_mark.errors.required">Cutoff Mark</div>
-              </div>
-            </div>
-
-            <div class="form-group col">
-                <label for="question">Admin Phone Number<sup>*</sup></label>
-                <input type="text" formControlName="admin_phone_number" class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && f.admin_phone_number.errors }" />
-                <div *ngIf="submitted && f.admin_phone_number.errors" class="invalid-feedback">
-                  <div *ngIf="f.admin_phone_number.errors.required">Admin Phone Number</div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="admin_email">Admin Email<sup>*</sup></label>
+                    <input type="text" formControlName="admin_email" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.admin_email.errors }" />
+                    <div *ngIf="submitted && f.admin_email.errors" class="invalid-feedback">
+                        <div *ngIf="f.admin_email.errors.required">Admin Email</div>
+                    </div>
                 </div>
-              </div>            
-          </div>  
-          <div class="form-group col">
-            <button class="btn btn-primary">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                Save Settings
-              </button>
-        </div>      
+
+                <div class="form-group col">
+                    <label for="question">Cutoff Mark<sup>*</sup></label>
+                    <input type="text" formControlName="cutoff_mark" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.cutoff_mark.errors }" />
+                    <div *ngIf="submitted && f.cutoff_mark.errors" class="invalid-feedback">
+                        <div *ngIf="f.cutoff_mark.errors.required">Cutoff Mark</div>
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <label for="question">Admin Phone Number<sup>*</sup></label>
+                    <input type="text" formControlName="admin_phone_number" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.admin_phone_number.errors }" />
+                    <div *ngIf="submitted && f.admin_phone_number.errors" class="invalid-feedback">
+                        <div *ngIf="f.admin_phone_number.errors.required">Admin Phone Number</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col">
+                <button class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Save Settings
+                </button>
+            </div>
         </form>
     </div>
 </div>
 
 <div class="card" *ngFor="let question of questions">
     <div class="card-header">
-        <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> (1 point)
+        <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> ({{question.points}}
+        {{question.points > 1 ? 'points' : 'point'}})
     </div>
     <div class="card-body">
-        <img src="{{question.img}}" *ngIf="question.img !== undefined" />
+        <img src="{{question.image_url}}" *ngIf="question.image_url !== ''" />
         <ol type="A">
             <li *ngIf="question.option_a !== undefined">
                 {{question.option_a}}

@@ -38,7 +38,8 @@ export class AddEditComponent implements OnInit {
       option_b: ['', Validators.required],
       option_c: [''],
       option_d: [''],
-      option_e: ['']
+      option_e: [''],
+      points: ['']
     });
 
     if (!this.isAddMode) {
@@ -54,6 +55,7 @@ export class AddEditComponent implements OnInit {
           this.f.option_c.setValue(x.option_c);
           this.f.option_d.setValue(x.option_d);
           this.f.option_e.setValue(x.option_e);
+          this.f.points.setValue(x.points);
         });
     }
   }

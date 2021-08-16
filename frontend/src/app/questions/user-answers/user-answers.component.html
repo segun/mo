@@ -31,35 +31,35 @@
     <br />
     <div class="container-lg card" *ngFor="let question of questions">
         <div class="card-header">
-            <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup> (1 point)
+            <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup>
         </div>
         <div class="card-body" style="padding-left: 5%;">
-            <img src="{{question.image_url}}" *ngIf="question.image_url !== ''"/>
+            <img src="{{question.image_url}}" *ngIf="question.image_url !== ''" />
 
             <div *ngIf="question.option_a !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_a" name="{{question.serial_number}}"
-                    value="option_a" (change)="changed(question.id, question.answer, 'option_a')">
+                    value="option_a" (change)="changed(question, 'option_a')">
                 <label for="{{question.serial_number}}_option_a">&nbsp;&nbsp;&nbsp;A. {{question.option_a}}</label>
             </div>
 
             <div *ngIf="question.option_b !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_b" name="{{question.serial_number}}"
-                    value="option_b" (change)="changed(question.id, question.answer, 'option_b')">
+                    value="option_b" (change)="changed(question, 'option_b')">
                 <label for="{{question.serial_number}}_option_b">&nbsp;&nbsp;&nbsp;B. {{question.option_b}}</label>
             </div>
             <div *ngIf="question.option_c !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_c" name="{{question.serial_number}}"
-                    value="option_c" (change)="changed(question.id, question.answer, 'option_c')">
+                    value="option_c" (change)="changed(question, 'option_c')">
                 <label for="{{question.serial_number}}_option_c">&nbsp;&nbsp;&nbsp;C. {{question.option_c}}</label>
             </div>
             <div *ngIf="question.option_d !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_d" name="{{question.serial_number}}"
-                    value="option_d" (change)="changed(question.id, question.answer, 'option_d')">
+                    value="option_d" (change)="changed(question, 'option_d')">
                 <label for="{{question.serial_number}}_option_d">&nbsp;&nbsp;&nbsp;D. {{question.option_d}}</label>
             </div>
             <div *ngIf="question.option_e !== ''">
                 <input type="radio" id="{{question.serial_number}}_option_e" name="{{question.serial_number}}"
-                    value="option_e" (change)="changed(question.id, question.answer, 'option_e')">
+                    value="option_e" (change)="changed(question, 'option_e')">
                 <label for="{{question.serial_number}}_option_e">&nbsp;&nbsp;&nbsp;E. {{question.option_e}}</label>
             </div>
         </div>

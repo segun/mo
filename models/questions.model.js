@@ -126,6 +126,7 @@ async function editQuestion(req, res) {
     const option_c = req.body.option_c;
     const option_d = req.body.option_d;
     const option_e = req.body.option_e;
+    const points = req.body.points;
 
     const updateQuery = `UPDATE masep.questions SET
             question = $1, 
@@ -136,10 +137,11 @@ async function editQuestion(req, res) {
             option_c = $6, 
             option_d = $7, 
             option_e = $8,
-            serial_number = $9
-            WHERE id = $10 returning *`
+            serial_number = $9,
+            points = $10
+            WHERE id = $11 returning *`
     const values = [
-        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, questionId
+        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, points, questionId
     ];
 
     try {
@@ -163,12 +165,13 @@ async function addNewQuestion(req, res) {
     const option_c = req.body.option_c;
     const option_d = req.body.option_d;
     const option_e = req.body.option_e;
+    const points = req.body.points;
 
     const createQuestionQuery = `INSERT INTO masep.questions (
         question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number
-    ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) returning *`;
+    ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *`;
     const values = [
-        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number
+        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, points
     ];
 
     try {
