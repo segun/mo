@@ -1,25 +1,26 @@
 .app-container {
-    background-color: white !important;
-    min-height: 780px !important;
-    /* background-image: url('./brickwallpaper.png') !important;   */
+  background-color: white !important;
+  min-height: 780px !important;
+  /* background-image: url('./brickwallpaper.png') !important;   */
 }
 .p-4 {
-    background-color: blue !important;
+  background-color: blue !important;
 }
 
 p {
-    font-size: 120%; 
-    text-align: center;
-    /* border: 2px solid black;
+  font-size: 120%;
+  text-align: center;
+  /* border: 2px solid black;
     margin: 0px; padding:32px;
     padding-right: 30px; */
-
 }
 
 .container {
-    background-color: #F0F8FF !important;
+  background-color: #f0f8ff !important;
 }
 
-.p-4, h1{
-    margin: 100px; padding:32px;
+.p-4,
+h1 {
+  margin: 100px;
+  padding: 32px;
 }

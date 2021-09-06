@@ -107,7 +107,7 @@ async function submitAnswers(req, res) {
 
         keys.forEach(async (key) => {
             answer = req.body[key];
-
+            
             if (answer.is_correct) {
                 sum += toNumber(answer.points);
             }

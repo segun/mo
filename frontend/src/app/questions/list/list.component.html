@@ -45,7 +45,16 @@
                         <div *ngIf="f.admin_phone_number.errors.required">Admin Phone Number</div>
                     </div>
                 </div>
+                <div class="form-group col">
+                    <label for="question">Time Required<sup>*</sup> (in minutes)</label>
+                    <input type="text" formControlName="time_required" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.time_required.errors }" />
+                    <div *ngIf="submitted && f.time_required.errors" class="invalid-feedback">
+                        <div *ngIf="f.time_required.errors.required">Time Required</div>
+                    </div>
+                </div>
             </div>
+
             <div class="form-group col">
                 <button class="btn btn-primary">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

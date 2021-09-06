@@ -10,6 +10,7 @@ async function saveQuestionSettings(req, res) {
     const admin_email = req.body.admin_email;
     const cutoff_mark = req.body.cutoff_mark;
     const admin_phone_number = req.body.admin_phone_number;
+    const time_required = req.body.time_required;
 
     const insertQuery = "INSERT INTO masep.settings (name, value) VALUES ($1, $2)";
     const updateQuery = "UPDATE masep.settings SET value = $2 WHERE name = $1";
@@ -49,6 +50,18 @@ async function saveQuestionSettings(req, res) {
             errored = true;
         }
     }
+
+    try {
+        values = ['time_required', time_required];
+        await query(insertQuery, values);
+    } catch (error) {
+        if (error.routine === '_bt_check_unique') {
+            values = ['time_required', time_required];
+            await query(updateQuery, values);
+        } else {
+            errored = true;
+        }
+    }    
 
     if (errored) {
         console.log(error);

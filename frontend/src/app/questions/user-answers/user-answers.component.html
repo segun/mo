@@ -1,9 +1,26 @@
 <div class="card container-lg">
-    <div class="card-header">
+    <div class="card-header" style="background-color: black; color: white; font-size: 24px;">
+        <!-- <div class="card-header"> -->
         MASEP Computer Skills Competency Test
     </div>
     <div class="card-body">
-        <p class="card-text">Please read each question and all answers CAREFULLY before chosing your response</p>
+        <p class="card-text">
+            Please read each question and all answers CAREFULLY before choosing your response.
+        </p>
+        <p>
+            The duration of this test is <span style="background-color: coral; color: white;"> {{duration}}
+                minutes.</span> To begin, please enter your email below and
+            click on the
+            'Start
+            Test' button.
+            Click the "Submit" button to submit your answers when done. If you do not submit, please note that your test
+            will be
+            automatically submitted after <span style="background-color: coral; color: white;"> {{duration}} minutes
+            </span> has elapsed. You are only allowed to take the test once.
+        </p>
+        <p>
+            <span style="background-color: coral; color: white;">Your time will start once you click Start Test.</span>
+        </p>
         <p class="card-text">* = Required</p>
     </div>
 </div>
@@ -16,8 +33,8 @@
         <input [(ngModel)]="email" type="text" class="form-control" placeholder="Email Address"
             aria-label="Email Address" aria-describedby="email">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        <button [disabled]="loading" class="btn btn-outline-secondary" type="button" id="button-addon1"
-            (click)="checkAvailability()">Check Eligibility</button>
+        <button [disabled]="loading" class="btn btn-success" type="button" id="button-addon1"
+            (click)="checkAvailability()">Start Test</button>
     </div>
 </div>
 
@@ -27,9 +44,16 @@
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         <button [disabled]="loading" class="btn btn-success" type="button" id="button-submit-down" data-toggle="modal"
             data-target="#submitModal">Submit Answers</button>
+        <span style="float: left; margin-left: 75%;">
+            Time Left:
+            <button [disabled]=true [class]="timerClass" type="button">{{hour}}</button> :
+            <button [disabled]=true [class]="timerClass" type="button">{{min}}</button> :
+            <button [disabled]=true [class]="timerClass" type="button">{{sec}}</button>
+        </span>
     </div>
     <br />
     <div class="container-lg card" *ngFor="let question of questions">
+        <!-- <div class="card-header" style="background-color: black; color: white;"> -->
         <div class="card-header">
             <b>Question {{question.serial_number}}.</b> {{question.question}} <sup>*</sup>
         </div>
@@ -76,7 +100,8 @@
 <!-- Contact Form Div -->
 <div class="container-lg" *ngIf="passedCutoff">
     <div class="card">
-        <div class="card-header" style="background-color: darkgreen; color: white;">
+        <!-- <div class="card-header" style="background-color: darkgreen; color: white;"> -->
+        <div class="card-header">
             You met the criteria for online classes. If you are interested, please fill out the contact form below. We
             will be in touch
         </div>
