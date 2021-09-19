@@ -181,7 +181,7 @@ async function addNewQuestion(req, res) {
     const points = req.body.points;
 
     const createQuestionQuery = `INSERT INTO masep.questions (
-        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number
+        question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, points
     ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *`;
     const values = [
         question, answer, image_url, option_a, option_b, option_c, option_d, option_e, serial_number, points
