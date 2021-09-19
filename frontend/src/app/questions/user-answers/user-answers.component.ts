@@ -13,6 +13,7 @@ export class UserAnswersComponent implements OnInit {
   questions = null;
   email;
   canTakeExam = false;
+  dateStarted = 0;
   passedCutoff = false;
   loading = false;
   adminPhonenumber = '0000-0000-0000';
@@ -26,6 +27,7 @@ export class UserAnswersComponent implements OnInit {
   duration = '';
   timerClass = 'btn btn-success';
   testStarted = false;
+  showBody = true;
 
   constructor(
     private questionsService: QuestionsService,
@@ -197,28 +199,26 @@ export class UserAnswersComponent implements OnInit {
       return;
     }
     this.loading = true;
+    this.showBody = false;
     this.answersService
       .checkAvailability(this.email)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.canTakeExam = Boolean(data);
+          this.canTakeExam = Boolean(data.canTakeExam);
+          this.dateStarted = +data.dateStarted;
+          this.requiredTime =
+            this.dateStarted <= 0
+              ? this.requiredTime
+              : this.requiredTime - (new Date().getTime() - this.dateStarted);
+          console.log(this.requiredTime);
           if (!this.canTakeExam) {
             this.alertService.error(
               `You have already taken this test and your score recorded. Please contact MASEP at ${this.adminPhonenumber}`
             );
           } else {
             this.f.email.setValue(this.email);
-            const timerInterval = setInterval(() => {
-              this.requiredTime -= 900;
-              if (this.requiredTime < 0 && this.testStarted) {
-                alert('You time is up. Click ok to submit your answers');
-                this.submit();
-                this.testStarted = false;
-                clearInterval(timerInterval);
-              }
-              this.displayTime();
-            }, 900);
+            this.startExam();
           }
 
           console.log(this.canTakeExam);
@@ -229,6 +229,19 @@ export class UserAnswersComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  startExam() {
+    const timerInterval = setInterval(() => {
+      this.requiredTime -= 900;
+      if (this.requiredTime < 0 && this.testStarted) {
+        alert('You time is up. Click ok to submit your answers');
+        this.submit();
+        this.testStarted = false;
+        clearInterval(timerInterval);
+      }
+      this.displayTime();
+    }, 900);
   }
 
   displayTime() {

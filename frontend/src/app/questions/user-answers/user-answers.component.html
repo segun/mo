@@ -3,7 +3,7 @@
         <!-- <div class="card-header"> -->
         MASEP Computer Skills Competency Test
     </div>
-    <div class="card-body">
+    <div class="card-body" *ngIf="showBody">
         <p class="card-text">
             Please read each question and all answers CAREFULLY before choosing your response.
         </p>
@@ -15,8 +15,10 @@
             Test' button.
             Click the "Submit" button to submit your answers when done. If you do not submit, please note that your test
             will be
-            automatically submitted after <span style="background-color: coral; color: white;"> {{duration}} minutes
-            </span> has elapsed. You are only allowed to take the test once.
+            automatically submitted after <span style="background-color: coral; color: white;"> {{duration}}
+                minutes.</span> has elapsed. You are only allowed to take the test once.
+            <span style="background-color: coral; color: white;">DO NOT REFRESH </span> the page during the test:
+            your answers will be lost and your time will not be reset
         </p>
         <p>
             <span style="background-color: coral; color: white;">Your time will start once you click Start Test.</span>
@@ -40,7 +42,8 @@
 
 <div *ngIf="canTakeExam">
     <br />
-    <div class="container-lg input-group mb-3">
+    <div class="container-lg input-group mb-3"
+        style="position: -webkit-sticky; /* Safari & IE */ position: sticky; top: 0;">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         <button [disabled]="loading" class="btn btn-success" type="button" id="button-submit-down" data-toggle="modal"
             data-target="#submitModal">Submit Answers</button>
@@ -100,8 +103,8 @@
 <!-- Contact Form Div -->
 <div class="container-lg" *ngIf="passedCutoff">
     <div class="card">
-        <!-- <div class="card-header" style="background-color: darkgreen; color: white;"> -->
-        <div class="card-header">
+        <div class="card-header" style="background-color: darkgreen; color: white;">
+            <!-- <div class="card-header"> -->
             You met the criteria for online classes. If you are interested, please fill out the contact form below. We
             will be in touch
         </div>

@@ -11,9 +11,26 @@ async function checkAvailability(req, res) {
     const email = req.params.email;
     const selectQuery = "SELECT * FROM masep.user_score WHERE email = $1";
     const values = [email];
+    let canTakeExam = false;
+
     try {
         const { rows } = await query(selectQuery, values);
-        return res.status(status.StatusCodes.ACCEPTED).send(rows.length < 1);
+        if(rows.length <= 0) {
+            const insertScoreQuery = "INSERT INTO masep.user_score (email, score, pass, cutoff_used, date_started) VALUES ($1, $2, $3, $4, $5) returning *";
+            const values = [email, -1, false, -1, new Date()];
+            await query(insertScoreQuery, values);    
+            canTakeExam = true;
+        } else if(rows.length > 0 && rows[0].score < 0 && rows[0].cutoff_used < 0) {
+            canTakeExam = true;            
+        } else {
+            canTakeExam = false;
+        }
+
+        const dateStarted = rows.length === 1 ? new Date(rows[0].date_started).getTime() : 0;
+        return res.status(status.StatusCodes.ACCEPTED).send({
+            canTakeExam: canTakeExam,
+            dateStarted: dateStarted
+        });
     } catch (error) {
         console.log(error);
         errorMessage.error = 'Operation was not successful, Contact Administrator';
@@ -133,9 +150,9 @@ async function submitAnswers(req, res) {
             successMessage.passedCutoff = sum >= toNumber(row.value);
         }
 
-        const insertScoreQuery = "INSERT INTO masep.user_score (email, score, pass, cutoff_used) VALUES ($1, $2, $3, $4) returning *";
-        const values = [answer.email, sum, successMessage.passedCutoff, row.value];
-        await query(insertScoreQuery, values);
+        const updateScoreQuery = "UPDATE masep.user_score set score = $2, pass = $3, cutoff_used = $4, date_taken = $5 WHERE email = $1";
+        const values = [answer.email, sum, successMessage.passedCutoff, row.value, new Date()];
+        await query(updateScoreQuery, values);
 
         successMessage.message = "Answers Submitted Successfully";
         
