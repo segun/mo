@@ -157,7 +157,7 @@ async function submitAnswers(req, res) {
         successMessage.message = "Answers Submitted Successfully";
         
         if (successMessage.passedCutoff) {
-            sendPassedEmail(answer.email);
+            // sendPassedEmail(answer.email);
         } else {
             sendFailedEmail(answer.email);
         }
