@@ -204,13 +204,8 @@
       <form [formGroup]="form" (ngSubmit)="onContactFormSubmit()">
         <div class="form-row">
           <div class="form-group col">
-            <label for="email">Why do you want to take the online class?</label>
-            <input
-              type="text"
-              formControlName="reason"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"
-            />
+            <label for="reason">Why do you want to take the online class?</label>
+            <textarea rows=5 formControlName="reason" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"></textarea>
             <div *ngIf="submitted && f.reason.errors" class="invalid-feedback">
               <div *ngIf="f.reason.errors.required">Reason for class is required</div>
             </div>
