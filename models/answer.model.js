@@ -159,7 +159,7 @@ async function submitAnswers(req, res) {
         if (successMessage.passedCutoff) {
             // sendPassedEmail(answer.email);
         } else {
-            sendFailedEmail(answer.email);
+            // sendFailedEmail(answer.email);
         }
 
         return res.status(status.StatusCodes.CREATED).send(successMessage);
