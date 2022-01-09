@@ -40,7 +40,6 @@ async function checkAvailability(req, res) {
 
 async function submitContactForm(req, res) {
     // TODO Send Email To Admin
-
     const selectQuery = "SELECT value FROM masep.settings WHERE name = 'admin_email'";
     const values = [];
     try {
@@ -80,7 +79,7 @@ async function submitContactForm(req, res) {
 sendPassedEmail = (email) => {
     const mailText = `
         <h3>You Passed!!!</h3><br />
-        <h4>You meet the criteria for online classes. If you are interested, please fill out the contact form on the page. We will be in touch</h4>
+        <h4>Thank you for your interest in MASEP Online. Please be advised that this is not an on-demand class. It adheres to a schedule the same as the in-person classes. Someone will be in touch within the next two weeks. Please be prepared to pay the $250 registration fee at that time.</h4>
         `;
     const transpoter = nodemailer.createTransport(props.email);
     const mailOptions = {
@@ -157,7 +156,7 @@ async function submitAnswers(req, res) {
         successMessage.message = "Answers Submitted Successfully";
         
         if (successMessage.passedCutoff) {
-            // sendPassedEmail(answer.email);
+            sendPassedEmail(answer.email);
         } else {
             // sendFailedEmail(answer.email);
         }
