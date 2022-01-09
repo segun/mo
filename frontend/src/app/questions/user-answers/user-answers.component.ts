@@ -39,6 +39,7 @@ export class UserAnswersComponent implements OnInit {
       email: ['', Validators.email],
       phoneNumber: ['', Validators.required],
       fullName: ['', Validators.required],
+      reason: ['', Validators.required],
     });
 
     this.questionsService

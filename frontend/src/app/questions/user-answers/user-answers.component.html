@@ -204,6 +204,21 @@
       <form [formGroup]="form" (ngSubmit)="onContactFormSubmit()">
         <div class="form-row">
           <div class="form-group col">
+            <label for="email">Why do you want to take the online class?</label>
+            <input
+              type="text"
+              formControlName="reason"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"
+            />
+            <div *ngIf="submitted && f.reason.errors" class="invalid-feedback">
+              <div *ngIf="f.reason.errors.required">Reason for class is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col">
             <label for="email">Email</label>
             <input
               type="text"

@@ -41,16 +41,16 @@ async function checkAvailability(req, res) {
 async function submitContactForm(req, res) {
     // TODO Send Email To Admin
     const selectQuery = "SELECT value FROM masep.settings WHERE name = 'admin_email'";
-    const values = [];
     try {
-        const { rows } = await query(selectQuery, values);
+        const { rows } = await query(selectQuery);
         const adminEmail = rows[0].value;
 
         const mailText = `
         <h3>New User Registration</h3><br />
         <h4>Email Address: ${req.body.email}</h4><br />
         <h4>Phone Number: ${req.body.phoneNumber}</h4><br />
-        <h4>Full Name: ${req.body.fullName}</h4><br />`;
+        <h4>Full Name: ${req.body.fullName}</h4><br />
+        <h4>Full Reason: ${req.body.reason}</h4><br />`;    
 
         const transpoter = nodemailer.createTransport(props.email);
         const mailOptions = {
@@ -59,6 +59,16 @@ async function submitContactForm(req, res) {
             subject: 'New user Registration',
             html: mailText
         }
+
+        const insertContactFormQuery = "INSERT INTO masep.contact_form (email, phonenumber, fullname, reason) VALUES ($1, $2, $3, $4) returning *";
+        const values = [
+            req.body.email,
+            req.body.phoneNumber,
+            req.body.fullName,
+            req.body.reason
+        ];
+
+        await query(insertContactFormQuery, values);
 
         transpoter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -69,6 +79,7 @@ async function submitContactForm(req, res) {
             }
         });
 
+        return res.status(status.StatusCodes.CREATED).send(successMessage);
     } catch (error) {
         console.log(error);
         errorMessage.error = 'Operation was not successful, Contact Administrator';
