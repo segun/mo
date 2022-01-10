@@ -204,10 +204,38 @@
       <form [formGroup]="form" (ngSubmit)="onContactFormSubmit()">
         <div class="form-row">
           <div class="form-group col">
-            <label for="reason">Why do you want to take the online class?</label>
-            <textarea rows=5 formControlName="reason" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"></textarea>
+            <label for="email">Upload Court Order</label>
+            <input
+              (change)="fileChange($event)"
+              type="file"
+              class="form-control"
+              accept=".pdf"
+            />
+            <br />
+            <span style="font-style: italic; font-size: smaller"
+              >If you do not have a court order, please contact the court where
+              you were sentenced to obtain one. If you are unsure what a court
+              order looks like, please click here
+              <a href="https://masep.org/where-is-my-masep-class/">https://masep.org/where-is-my-masep-class/</a></span
+            >
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="reason"
+              >Why do you want to take the online class?</label
+            >
+            <textarea
+              rows="5"
+              formControlName="reason"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"
+            ></textarea>
             <div *ngIf="submitted && f.reason.errors" class="invalid-feedback">
-              <div *ngIf="f.reason.errors.required">Reason for class is required</div>
+              <div *ngIf="f.reason.errors.required">
+                Reason for class is required
+              </div>
             </div>
           </div>
         </div>

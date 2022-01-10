@@ -5,6 +5,12 @@ const userRoutes = require('./routes/userRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 const answersRoutes = require('./routes/answersRoutes');
 const cors = require('cors')
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.use(cors())
 // parse application/x-www-form-urlencoded

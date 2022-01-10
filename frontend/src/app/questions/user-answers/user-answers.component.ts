@@ -28,6 +28,7 @@ export class UserAnswersComponent implements OnInit {
   timerClass = 'btn btn-success';
   testStarted = false;
   showBody = true;
+  uploadedFiles: Array<File>;
 
   constructor(
     private questionsService: QuestionsService,
@@ -40,6 +41,7 @@ export class UserAnswersComponent implements OnInit {
       phoneNumber: ['', Validators.required],
       fullName: ['', Validators.required],
       reason: ['', Validators.required],
+      courtOrder: [''],
     });
 
     this.questionsService
@@ -89,6 +91,22 @@ export class UserAnswersComponent implements OnInit {
 
   get f() {
     return this.form.controls;
+  }
+
+  fileChange(element) {
+    this.uploadedFiles = element.target.files;
+
+    let formData = new FormData();
+    for (var i = 0; i < this.uploadedFiles.length; i++) {
+      formData.append(
+        'uploads[]',
+        this.uploadedFiles[i],
+        this.uploadedFiles[i].name
+      );
+      formData.append("email", this.f.email.value);
+    }
+
+    this.answersService.uploadFile(formData).subscribe((data) => {console.log("uploaded: ", data)});
   }
 
   onContactFormSubmit() {

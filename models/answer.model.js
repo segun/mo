@@ -46,13 +46,45 @@ async function checkAvailability(req, res) {
   }
 }
 
+async function uploadFile(email, path) {
+  const insertFileUploadQuery =
+    "INSERT INTO masep.file_uploads (path, email) VALUES ($1, $2)";
+
+  const updateFileUploadQuery =
+    "UPDATE masep.file_uploads SET path = $1 WHERE email = $2";
+
+  const insertValues = [path, email];
+
+  try {
+    await query(insertFileUploadQuery, insertValues);
+  } catch (err) {
+    await query(updateFileUploadQuery, insertValues);
+  }
+
+  return true;
+}
+
 async function submitContactForm(req, res) {
   // TODO Send Email To Admin
   const selectQuery =
     "SELECT value FROM masep.settings WHERE name = 'admin_email'";
+
+  const selectFileUploadIdQuery = `SELECT id FROM masep.file_uploads WHERE email = '${req.body.email}'`;
+
+  console.log(selectFileUploadIdQuery);
+
   try {
     const { rows } = await query(selectQuery);
     const adminEmail = rows[0].value;
+
+    const { rows: fuRows } = await query(selectFileUploadIdQuery);
+
+    console.log(fuRows);
+
+    let fuId = 0;
+    if (fuRows && fuRows.length > 0) {
+      fuId = fuRows[0].id;
+    }
 
     const mailText = `
         <h3>New User Registration</h3><br />
@@ -69,14 +101,26 @@ async function submitContactForm(req, res) {
       html: mailText,
     };
 
-    const insertContactFormQuery =
-      "INSERT INTO masep.contact_form (email, phonenumber, fullname, reason) VALUES ($1, $2, $3, $4) returning *";
-    const values = [
+    let insertContactFormQuery =
+      "INSERT INTO masep.contact_form (email, phonenumber, fullname, reason, fileuploadid) VALUES ($1, $2, $3, $4, $5) returning *";
+    let values = [
       req.body.email,
       req.body.phoneNumber,
       req.body.fullName,
       req.body.reason,
+      fuId,
     ];
+
+    if (fuId === 0) {
+      insertContactFormQuery =
+        "INSERT INTO masep.contact_form (email, phonenumber, fullname, reason) VALUES ($1, $2, $3, $4) returning *";
+      values = [
+        req.body.email,
+        req.body.phoneNumber,
+        req.body.fullName,
+        req.body.reason,
+      ];
+    }
 
     await query(insertContactFormQuery, values);
 
@@ -84,7 +128,7 @@ async function submitContactForm(req, res) {
       transpoter.sendMail(mailOptions, (error, info) => {
         if (error) {
           throw error;
-        } 
+        }
       });
     } catch (err) {
       console.log(error);
@@ -216,4 +260,5 @@ module.exports = {
   checkAvailability,
   submitAnswers,
   submitContactForm,
+  uploadFile,
 };

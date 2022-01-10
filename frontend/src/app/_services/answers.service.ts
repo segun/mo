@@ -24,6 +24,10 @@ export class AnswersService {
     return this.answerSubject.value;
   }
 
+  uploadFile(formData) {
+    return this.http.post(`${environment.apiUrl}/answers/uploadFile`, formData);
+  }
+
   submitContactForm(form) {
     return this.http.post(`${environment.apiUrl}/answers/contactForm`, form);
   }
