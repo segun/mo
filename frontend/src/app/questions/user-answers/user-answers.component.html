@@ -45,7 +45,7 @@
 
 <br />
 
-<div class="container-lg">
+<div class="container-lg" *ngIf="!passedCutoff">
   <div class="input-group mb-3">
     <span class="input-group-text" id="email">Email Address:</span>
     <input
@@ -204,7 +204,7 @@
       <form [formGroup]="form" (ngSubmit)="onContactFormSubmit()">
         <div class="form-row">
           <div class="form-group col">
-            <label for="email">Upload Court Order</label>
+            <label for="email">Upload Your Court Order</label>
             <input
               (change)="fileChange($event)"
               type="file"
@@ -216,27 +216,10 @@
               >If you do not have a court order, please contact the court where
               you were sentenced to obtain one. If you are unsure what a court
               order looks like, please click here
-              <a href="https://masep.org/where-is-my-masep-class/">https://masep.org/where-is-my-masep-class/</a></span
+              <a href="https://masep.org/where-is-my-masep-class/"
+                >https://masep.org/where-is-my-masep-class/</a
+              ></span
             >
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col">
-            <label for="reason"
-              >Why do you want to take the online class?</label
-            >
-            <textarea
-              rows="5"
-              formControlName="reason"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"
-            ></textarea>
-            <div *ngIf="submitted && f.reason.errors" class="invalid-feedback">
-              <div *ngIf="f.reason.errors.required">
-                Reason for class is required
-              </div>
-            </div>
           </div>
         </div>
 
@@ -294,6 +277,26 @@
             </div>
           </div>
         </div>
+
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="reason"
+              >Why do you want to take the online class?</label
+            >
+            <textarea
+              rows="5"
+              formControlName="reason"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"
+            ></textarea>
+            <div *ngIf="submitted && f.reason.errors" class="invalid-feedback">
+              <div *ngIf="f.reason.errors.required">
+                Reason for class is required
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <button [disabled]="loading" class="btn btn-primary">
