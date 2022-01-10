@@ -69,7 +69,7 @@ async function submitContactForm(req, res) {
   const selectQuery =
     "SELECT value FROM masep.settings WHERE name = 'admin_email'";
 
-  const selectFileUploadIdQuery = `SELECT id FROM masep.file_uploads WHERE email = '${req.body.email}'`;
+  const selectFileUploadIdQuery = `SELECT id, path FROM masep.file_uploads WHERE email = '${req.body.email}'`;
 
   console.log(selectFileUploadIdQuery);
 
@@ -82,6 +82,8 @@ async function submitContactForm(req, res) {
     console.log(fuRows);
 
     let fuId = 0;
+    const fuPath = fuRows[0].path;
+
     if (fuRows && fuRows.length > 0) {
       fuId = fuRows[0].id;
     }
@@ -99,6 +101,7 @@ async function submitContactForm(req, res) {
       to: adminEmail,
       subject: "New user Registration",
       html: mailText,
+      attachments: [],
     };
 
     let insertContactFormQuery =
@@ -120,6 +123,12 @@ async function submitContactForm(req, res) {
         req.body.fullName,
         req.body.reason,
       ];
+    } else {
+      mailOptions.attachments.push({
+        filename: "courtorder.pdf",
+        path: path,
+        contentType: "application/pdf",
+      });
     }
 
     await query(insertContactFormQuery, values);
