@@ -14,8 +14,12 @@ const submitContactForm = async (req, res) => {
 }
 
 const uploadFile = async (req, res) => {
-    console.log(req.files);
-    console.log(req.body);
+    var fs = require('fs');
+    var dir = './uploads';
+    
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }    
     const tempPath = req.files.uploads[0].path;
     const saved = await answerModel.uploadFile(req.body.email, tempPath);
     res.status(status.StatusCodes.CREATED).send({saved, tempPath});
