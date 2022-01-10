@@ -126,7 +126,7 @@ async function submitContactForm(req, res) {
     } else {
       mailOptions.attachments.push({
         filename: "courtorder.pdf",
-        path: path,
+        path: fuPath,
         contentType: "application/pdf",
       });
     }
