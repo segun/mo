@@ -160,15 +160,12 @@ async function submitContactForm(req, res) {
 }
 
 sendPassedEmail = (email) => {
-  const mailText = `
-        <h3>You Passed!!!</h3><br />
-        <h4>Thank you for your interest in MASEP Online. Please be advised that this is not an on-demand class. It adheres to a schedule the same as the in-person classes. Someone will be in touch within the next two weeks. Please be prepared to pay the $250 registration fee at that time.</h4>
-        `;
+  const mailText = `${props.email.successMessage}`;
   const transpoter = nodemailer.createTransport(props.email);
   const mailOptions = {
     from: props.email.from,
     to: email,
-    subject: "Masep Computer Test",
+    subject: `${props.email.subject}`,
     html: mailText,
   };
 
@@ -180,15 +177,12 @@ sendPassedEmail = (email) => {
 };
 
 sendFailedEmail = (email) => {
-  const mailText = `
-    <h3>You Didn't meet cutoff mark</h3><br />
-    <h4>You are not eligible for online classes. Please contact MASEP at [phone number] to schedule your in-person class.</h4>
-    `;
+  const mailText = `${props.email.failedMessage}`;
   const transpoter = nodemailer.createTransport(props.email);
   const mailOptions = {
     from: props.email.from,
     to: email,
-    subject: "Masep Computer Test",
+    subject: `${props.email.subject}`,
     html: mailText,
   };
 

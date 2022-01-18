@@ -168,9 +168,7 @@ export class UserAnswersComponent implements OnInit {
           this.canTakeExam = false;
           this.passedCutoff = data['passedCutoff'];
           if (this.passedCutoff) {
-            this.alertService.success(
-              `You met the criteria for online classes. If you are interested, please fill out the contact form below. We will be in touch`
-            );
+            // do nothing
           } else {
             this.alertService.error(
               `You are ineligible to take MASEP Online. If you are in the state of Mississippi, please see your court order for further instruction on where to attend MASEP in person. If you are out of state, please contact MASEP at 662-325-3423`
