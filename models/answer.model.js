@@ -133,7 +133,9 @@ async function submitContactForm(req, res) {
 
     await query(insertContactFormQuery, values);
 
-    try {
+    sendPassedEmail(answer.email);
+    
+    try {    
       transpoter.sendMail(mailOptions, (error, info) => {
         if (error) {
           throw error;
@@ -242,12 +244,6 @@ async function submitAnswers(req, res) {
     await query(updateScoreQuery, values);
 
     successMessage.message = "Answers Submitted Successfully";
-
-    if (successMessage.passedCutoff) {
-      sendPassedEmail(answer.email);
-    } else {
-      // sendFailedEmail(answer.email);
-    }
 
     return res.status(status.StatusCodes.CREATED).send(successMessage);
   } catch (error) {
