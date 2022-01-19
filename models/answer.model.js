@@ -82,7 +82,7 @@ async function submitContactForm(req, res) {
     console.log(fuRows);
 
     let fuId = 0;
-    const fuPath = fuRows[0].path;
+    const fuPath = (fuRows && fuRows.length > 0) ? fuRows[0].path : '';
 
     if (fuRows && fuRows.length > 0) {
       fuId = fuRows[0].id;
